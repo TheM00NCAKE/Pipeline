@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Mon Globe</title>
+    <script src="https://cdn.jsdelivr.net/npm/globe.gl"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <style>
+      body {margin:0; font-family:impact;}
+      #header{
+        width:100%;
+        position:absolute;
+        top:0%;
+        text-align:center;
+        color:white;
+        font-size:45px;
+        background-color:rgba(48, 48, 48, 0.4);
+      }
+      #btnX{
+        display:flex;
+        align-items:center;
+        position:absolute;
+        justify-content:center;
+        width:50px;
+        height:30px;
+        top:10%;
+        left:24.5%;
+        background-color:rgb(242, 242, 242);
+      }
+      
+      #btnV{
+        position:absolute;
+        text-align:center;
+        width:60px;
+        height:20px;
+        top:10%;
+        left:0.5%;
+        background-color:white;
+      }
+
+      #template{
+        position:absolute;
+        width:25%;
+        height:80%;
+        top:10%;
+        left:3%;
+        background-color:white;
+      }
+      #frise{
+        position:absolute;
+        top:91%;
+        left:3%;
+      }
+      #depth{
+        position:absolute;
+        top:12%;
+        left:90%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="ctn"></div>
+    <div id="header">Header test</div>
+    <img id="template" src="assets/canvasTest.png"></img>
+    <div id="btnX" onclick="enlever()">X</div>
+    <div id="btnV" onclick="ajouter()">></div>
+    <img id="frise" src="assets/frise2.png"></img>
+    <img id="depth" src="assets/depth.png"></img>
+    <script>
+        function enlever(){
+          $('#template,#btnX').css('display','none');
+        }
+        function ajouter(){
+          $('#template,#btnX').css('display','');
+        }
+        const test={
+            "type":"Feature",
+            "properties":{
+                "signal":1},
+            "geometry":{
+            "type":"Polygon",
+            "coordinates":[[[48.8566, 2.3522],
+                      [23.8566,6.3522],
+                      [34.8536,2.3522]]]}}
+      // globe possède ces 2 "attributs", on peut les chaîner sans virgule woooh
+      const globe = Globe()(document.getElementById('ctn')).globeImageUrl('assets/ImgTestTHETAO.png').backgroundImageUrl('assets/bg2.jpg')
+        .atmosphereAltitude(0.1).pointsData([{lat:23,lng:18}]).pointColor(()=>"purple").pointRadius(0.78).pointAltitude(0.01).pointLabel(()=>"oejoeic");
+        globe.polygonsData([test]).polygonGeoJsonGeometry(d=>d.geometry).polygonCapColor(()=>"red").polygonLabel(()=>"test");
+        globe.pointOfView({altitude:2.3});
+        //.bumImage c pour superposer avec une autre img I think ? pointsData c pour mettre une 'ligne' sur un point, onGlobeClick c pour gérer le zoom 
+        globe.onGlobeClick(({lat,lng})=>{globe.pointOfView({lat,lng,altitude:0.5},1000)});
+    </script>
+  </body>
+</html>
