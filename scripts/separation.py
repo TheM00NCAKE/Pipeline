@@ -5,7 +5,6 @@ import numpy as np
 from PIL import Image
 from pathlib import Path
 import sys
-import psutil, os
 
 chemin=str((Path(__file__).parent).parent/'www'/'assets')
 sys.path.append(chemin)
@@ -27,9 +26,9 @@ def colorer(points,canvas,val):
     y=points['latitude'].to_numpy().astype(int)
     if val=='so':
         so=np.array(points['so'])
-        r=np.where(so>30,127-((so-29)*7).astype(int),255)  #>-2 pour thetao (temperature), >30 pour so (salinité)
+        r=np.where(so>30,127-((so-29)*7).astype(int),208)  #>-2 pour thetao (temperature), >30 pour so (salinité)
         g=np.where(so>30,216-((so-29)*8).astype(int),255)
-        b=np.where(so>30,256-((so-29)*9).astype(int),255)
+        b=np.where(so>30,256-((so-29)*9).astype(int),252)
     else:
         thetao=np.array(points['thetao'])
         r=np.where(thetao<14,0,np.where(thetao<20,16+(thetao-14)*35,237+(thetao-16) ))  #>-2 pour thetao (temperature), >30 pour so (salinité)
@@ -70,14 +69,12 @@ def processus(min,max,valeur):
 
 #Je mettrais ca dans un main plus tard (+ je modifierais le code en mettant certaines fonctions dans des fichiers différents etc...
 def main():
-    for i in range(0,3):
+    for i in range(0,1):
         debut=time.time() 
         valeur="thetao"
         processus(-180,180,valeur)
         fin2=time.time()
         print(fin2-debut)
-        process = psutil.Process(os.getpid())
-        print("Mémoire utilisée (Mo):", process.memory_info().rss / (1024 * 1024))
 
 main()
 """

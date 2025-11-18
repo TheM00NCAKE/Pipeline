@@ -1,3 +1,4 @@
+
 import sqlite3
 import sys
 import pandas as pd
@@ -10,12 +11,11 @@ chemin=str((Path(__file__).parent).parent / 'data'/'db')
 sys.path.append(chemin)
 
 def fds():
-  """Récupère les données statiques de la base de données db. N'est pas disponible sur ce repo, veuillez récupérer
-  la dernière DB reçu."""
+  """Récupère les données statiques de la base de données db."""
   d=time.time()
   con=sqlite3.connect(chemin) 
-  df2=pd.read_sql_query('select * from ValsStatiques',con)
-  df2.set_index(['longitude', 'latitude'], inplace=True)
+  df2=pd.read_sql_query('select * from ValsStatiques',con) # sélectionner un océan précis : where ID_TypeOcean=valeur
+  df2.set_index(['longitude', 'latitude'], inplace=True) 
   con.close()
   f=time.time()
   print('données statiques:', f-d)
@@ -42,7 +42,7 @@ def fdd(min,max,valeur):
     end_datetime="2001-09-01 00:00:00",            #la fin de la mesure sous forme annee-mois-JourTheures:minutes:secondes
     minimum_depth=0.49402499198913574,    
     maximum_depth=0.49402499198913574,          
-  )[valeur].isel(time=0, depth=0) #les vals dépendent de long, lat, depth et time, mais depth et time ne servent à rien ici donc on les enleve #,"thetao"]
+  )[valeur].isel(time=0, depth=0) #les vals dépendent de long, lat, depth et time, mais depth et time ne servent à rien ici donc on les enleve
   f=time.time()
   print('données dynamique :', f-d)
   return df
@@ -63,5 +63,3 @@ def test(dfs,lon,lat,dfd,valeur):
   #on créer a qui va attribuer les valeurs aux lat et lon appropriés
   dfs[valeur]=dfd.sel(longitude=xr.DataArray(lon),latitude=xr.DataArray(lat),)
   return dfs
-
-
