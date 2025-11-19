@@ -26,7 +26,7 @@ def colorer(points,canvas,val):
     y=points['latitude'].to_numpy().astype(int)
     if val=='so':
         so=np.array(points['so'])
-        r=np.where(so>30,127-((so-29)*7).astype(int),208)  #>-2 pour thetao (temperature), >30 pour so (salinité)
+        r=np.where(so>30,127-((so-29)*7).astype(int),208)  
         g=np.where(so>30,216-((so-29)*8).astype(int),255)
         b=np.where(so>30,256-((so-29)*9).astype(int),252)
     else:
@@ -69,7 +69,7 @@ def processus(min,max,valeur):
 
 #Je mettrais ca dans un main plus tard (+ je modifierais le code en mettant certaines fonctions dans des fichiers différents etc...
 def main():
-    for i in range(0,1):
+    for i in range(0,3):
         debut=time.time() 
         valeur="thetao"
         processus(-180,180,valeur)
