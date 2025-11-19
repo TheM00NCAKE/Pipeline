@@ -1,4 +1,3 @@
-
 import sqlite3
 import sys
 import pandas as pd
@@ -59,7 +58,13 @@ def prepa(dfs):
 def test(dfs,lon,lat,dfd,valeur):
   """Permet de fusionner les deux ensembles de données en attribuant une nouvelle colonne 
   à la DataFrame statique. Celle ci est attribué à l'aide d'une méthode qui permet de positionner 
-  les valeurs en fonction de leur longitude et latitude. """
+  les valeurs en fonction de leur longitude et latitude."""
+  d=time.time()
   #on créer a qui va attribuer les valeurs aux lat et lon appropriés
   dfs[valeur]=dfd.sel(longitude=xr.DataArray(lon),latitude=xr.DataArray(lat),)
-  return dfs
+  print(f"valeur maximale : {dfs[valeur].max()}\nValeur minimale : {dfs[valeur].min()}\nMoyenne : {dfs[valeur].mean()}")
+  df=dfs.dropna().copy()
+  f=time.time()
+  print('fusion des données :', f-d)
+  return df
+
